@@ -37,7 +37,7 @@ namespace Sources.Models
 
         public bool TrySpend(double value)
         {
-            if (_currentValue.Value - value > 0)
+            if (_currentValue.Value - value >= 0)
             {
                 _currentValue.Value -= value;
                 return true;

@@ -13,12 +13,15 @@ namespace Sources.GameLoop
         [SerializeField] private ProgressBar ProgressBar;
         [SerializeField] private HorizontalLayoutGroup ResourcesParent;
         [SerializeField] private ResourcePresenter ResourcePresenterPrefab;
+        [SerializeField] private VerticalLayoutGroup GeneratorsParent;
+        [SerializeField] private GeneratorPresenter GeneratorPresenterPrefab;
         private GameStateMachine _gameStateMachine;
 
         private void Awake()
         {
             _gameStateMachine = new GameStateMachine(StaticDataLoader.DataContainer, ProgressBar,
-                ResourcePresenterPrefab, ResourcesParent.transform);
+                ResourcePresenterPrefab, ResourcesParent.transform, GeneratorPresenterPrefab,
+                GeneratorsParent.transform);
             _gameStateMachine.Enter<ResourcesInitState>();
         }
     }

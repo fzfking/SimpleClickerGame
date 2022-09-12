@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Sources.Models
 {
-    public class Generator: IGenerator, IProgressive
+    public class Generator: IGenerator
     {
         
         public string Name { get; }
@@ -14,9 +14,11 @@ namespace Sources.Models
         public Sprite Icon { get; }
         public IResource ProductionResource { get; }
         public IResource CostResource { get; }
-        public int Level { get; private set; }
-        public double ProductionValue => _baseProduction * Level;
-        public double UpgradeCost => _baseUpgradeCost * Level;
+
+        public IReadOnlyReactiveProperty<int> Level => _level;
+
+        public double ProductionValue => _baseProduction * Level.Value;
+        public double UpgradeCost => _baseUpgradeCost * Level.Value;
         public float DelayTime => _baseDelayTime * 1f;
         public IReadOnlyReactiveProperty<float> Progress => _progress;
 
@@ -24,12 +26,13 @@ namespace Sources.Models
         private readonly double _baseUpgradeCost;
         private readonly float _baseDelayTime;
         private readonly ReactiveProperty<float> _progress;
+        private ReactiveProperty<int> _level;
 
 
         public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level)
         {
             ProductionResource = productionResource;
-            Level = level;
+            _level = new ReactiveProperty<int>(level);
             Name = data.Name;
             Description = data.Description;
             Icon = data.Icon;
@@ -47,7 +50,7 @@ namespace Sources.Models
             _baseUpgradeCost = baseCost;
             _baseProduction = baseProduction;
             _baseDelayTime = baseDelay;
-            Level = 1;
+            _level = new ReactiveProperty<int>(1);
             _progress = new ReactiveProperty<float>(0);
         }
 
@@ -61,11 +64,16 @@ namespace Sources.Models
             MainThreadDispatcher.StartUpdateMicroCoroutine(WaitForProduce());
         }
 
+        public bool CanUpgrade(int levelValue)
+        {
+            return (CostResource.CurrentValue.Value - UpgradeCost) >= 0f;
+        }
+
         public bool TryUpgrade()
         {
             if (CostResource.TrySpend(UpgradeCost))
             {
-                Level++;
+                _level.Value++;
                 return true;
             }
 

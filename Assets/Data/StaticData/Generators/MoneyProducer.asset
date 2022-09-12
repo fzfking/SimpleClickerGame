@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: MoneyProducer
   _description: 
-  _icon: {fileID: 0}
-  _productionResource: {fileID: 11400000, guid: f88a85f3edf99fd4a96ff0881e90e817, type: 2}
+  _icon: {fileID: 21300000, guid: 26f6d0e08a861f74f91e9b38379619c9, type: 3}
+  _productionResource: {fileID: 11400000, guid: 2309be1fd16965c48a1758c38ebf6517, type: 2}
   _costResource: {fileID: 11400000, guid: f88a85f3edf99fd4a96ff0881e90e817, type: 2}
   _baseProduction: 1
   _baseCost: 4

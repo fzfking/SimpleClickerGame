@@ -18,7 +18,8 @@ namespace Sources.GameLoop
         private IExitableState _currentState;
 
         public GameStateMachine(StaticDataContainer dataContainer, ProgressBar progressBar,
-            ResourcePresenter resourcePresenter, Transform resourcesParent)
+            ResourcePresenter resourcePresenter, Transform resourcesParent, GeneratorPresenter generatorPresenter,
+            Transform generatorsParent)
         {
             _states = new Dictionary<Type, IExitableState>()
             {
@@ -28,6 +29,8 @@ namespace Sources.GameLoop
                     new GeneratorsInitState(this, dataContainer.GeneratorsDataContainer, progressBar),
                 [typeof(ResourcesViewInitState)] =
                     new ResourcesViewInitState(this, progressBar, resourcePresenter, resourcesParent),
+                [typeof(GeneratorViewsInitState)] =
+                    new GeneratorViewsInitState(this, progressBar, generatorPresenter, generatorsParent),
             };
         }
 

@@ -53,7 +53,7 @@ namespace Sources.GameLoop.States
                     $"{generatorData.Name} loaded.");
             }
             yield return new WaitForSeconds(0.5f);
-            _progressBar.gameObject.SetActive(false);
+            _stateMachine.Enter<GeneratorViewsInitState, IGenerator[]>(_generators.Values.ToArray());
         }
 
         public void Exit()
