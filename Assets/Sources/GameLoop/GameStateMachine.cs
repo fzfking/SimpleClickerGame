@@ -5,8 +5,10 @@ using System.Reflection;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
 using Sources.GameLoop.States;
+using Sources.Presenters;
 using Sources.Presenters.HelperViews;
 using UniRx;
+using UnityEngine;
 
 namespace Sources.GameLoop
 {
@@ -15,7 +17,8 @@ namespace Sources.GameLoop
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _currentState;
 
-        public GameStateMachine(StaticDataContainer dataContainer, ProgressBar progressBar)
+        public GameStateMachine(StaticDataContainer dataContainer, ProgressBar progressBar,
+            ResourcePresenter resourcePresenter, Transform resourcesParent)
         {
             _states = new Dictionary<Type, IExitableState>()
             {
@@ -23,6 +26,8 @@ namespace Sources.GameLoop
                     new ResourcesInitState(this, dataContainer.ResourcesDataContainer, progressBar),
                 [typeof(GeneratorsInitState)] =
                     new GeneratorsInitState(this, dataContainer.GeneratorsDataContainer, progressBar),
+                [typeof(ResourcesViewInitState)] =
+                    new ResourcesViewInitState(this, progressBar, resourcePresenter, resourcesParent),
             };
         }
 

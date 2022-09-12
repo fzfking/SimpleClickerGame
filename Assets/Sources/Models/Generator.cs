@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Sources.Models
 {
-    public class Generator: IGenerator, IVisualData, IProgressive
+    public class Generator: IGenerator, IProgressive
     {
         
         public string Name { get; }

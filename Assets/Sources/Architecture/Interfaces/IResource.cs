@@ -2,7 +2,7 @@ using UniRx;
 
 namespace Sources.Architecture.Interfaces
 {
-    public interface IResource
+    public interface IResource: IVisualData
     {
         IReadOnlyReactiveProperty<double> CurrentValue { get; }
         void Increase(double value);

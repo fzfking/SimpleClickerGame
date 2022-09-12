@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
 using Sources.Models;
@@ -51,10 +52,8 @@ namespace Sources.GameLoop.States
                 _progressBar.UpdateView((i + 0f) / generatorsData.Length,
                     $"{generatorData.Name} loaded.");
             }
-
             yield return new WaitForSeconds(0.5f);
             _progressBar.gameObject.SetActive(false);
-
         }
 
         public void Exit()

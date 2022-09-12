@@ -1,6 +1,6 @@
 ﻿namespace Sources.Architecture.Interfaces
 {
-    public interface IGenerator
+    public interface IGenerator: IVisualData
     {
         IResource ProductionResource { get; }
         IResource CostResource { get; }

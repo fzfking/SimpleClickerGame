@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Sources.Models
 {
-    public class Resource : IResource, IVisualData
+    public class Resource : IResource
     {
         public string Name { get; }
         public string Description { get; }

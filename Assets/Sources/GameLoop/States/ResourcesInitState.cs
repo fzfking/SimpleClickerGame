@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
@@ -37,7 +38,7 @@ namespace Sources.GameLoop.States
         {
             _progressBar.gameObject.SetActive(true);
             yield return ResourcesInitialization();
-            _stateMachine.Enter<GeneratorsInitState, Dictionary<ResourceData, IResource>>(_resources);
+            _stateMachine.Enter<ResourcesViewInitState, Dictionary<ResourceData, IResource>>(_resources); 
         }
 
         private IEnumerator ResourcesInitialization()
