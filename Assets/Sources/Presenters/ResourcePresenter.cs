@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Sources.Presenters
 {
-    public class ResourcePresenter : MonoBehaviour, IInitiable<IResource>
+    public class ResourcePresenter : MonoBehaviour, IInitiable<IResource>, ILoadable
     {
         [SerializeField] private Image Icon;
         [SerializeField] private TextMeshProUGUI ValueText;

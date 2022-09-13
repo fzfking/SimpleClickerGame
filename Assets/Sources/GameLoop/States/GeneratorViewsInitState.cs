@@ -40,6 +40,7 @@ namespace Sources.GameLoop.States
                 yield return null;
             }
             _progressBar.gameObject.SetActive(false);
+            _stateMachine.Enter<GameLoopState, GeneratorPresenter[]>(_generatorPresenters);
         }
 
         public void Exit()

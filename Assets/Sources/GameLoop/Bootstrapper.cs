@@ -1,5 +1,7 @@
 ﻿using System;
+using Sources.Architecture.Interfaces;
 using Sources.Data;
+using Sources.GameLoop.Services;
 using Sources.GameLoop.States;
 using Sources.Presenters;
 using Sources.Presenters.HelperViews;
@@ -16,13 +18,19 @@ namespace Sources.GameLoop
         [SerializeField] private VerticalLayoutGroup GeneratorsParent;
         [SerializeField] private GeneratorPresenter GeneratorPresenterPrefab;
         private GameStateMachine _gameStateMachine;
+        private ILoaderService _loaderService;
 
         private void Awake()
         {
-            _gameStateMachine = new GameStateMachine(StaticDataLoader.DataContainer, ProgressBar,
-                ResourcePresenterPrefab, ResourcesParent.transform, GeneratorPresenterPrefab,
+            _loaderService = new LoaderService();
+            _gameStateMachine = new GameStateMachine(_loaderService, ProgressBar, ResourcesParent.transform,
                 GeneratorsParent.transform);
             _gameStateMachine.Enter<ResourcesInitState>();
+        }
+
+        private void OnDestroy()
+        {
+            _gameStateMachine.Exit();
         }
     }
 }

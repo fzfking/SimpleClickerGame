@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
 using UniRx;
@@ -6,9 +7,9 @@ using UnityEngine;
 
 namespace Sources.Models
 {
-    public class Generator: IGenerator
+    public class Generator : IGenerator
     {
-        
+        public ReactiveCommand<double> OnEnd { get; private set; }
         public string Name { get; }
         public string Description { get; }
         public Sprite Icon { get; }
@@ -26,7 +27,7 @@ namespace Sources.Models
         private readonly double _baseUpgradeCost;
         private readonly float _baseDelayTime;
         private readonly ReactiveProperty<float> _progress;
-        private ReactiveProperty<int> _level;
+        private readonly ReactiveProperty<int> _level;
 
 
         public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level)
@@ -41,6 +42,7 @@ namespace Sources.Models
             _baseDelayTime = data.BaseDelay;
             CostResource = costResource;
             _progress = new ReactiveProperty<float>(0);
+            OnEnd = new ReactiveCommand<double>(Progress.Select(p => p == 0f).AsObservable(), true);
         }
 
         private Generator(IResource resource, double baseCost, double baseProduction, float baseDelay)
@@ -52,14 +54,24 @@ namespace Sources.Models
             _baseDelayTime = baseDelay;
             _level = new ReactiveProperty<int>(1);
             _progress = new ReactiveProperty<float>(0);
+            OnEnd = new ReactiveCommand<double>(Progress.Select(p => p == 0f).AsObservable(), true);
         }
 
-        public static Generator CreateMock(IResource resource, double baseCost = 0, double baseProduction = 0, float baseDelay = 0f)
+        public static Generator CreateMock(IResource resource, double baseCost = 0, double baseProduction = 0,
+            float baseDelay = 0f)
         {
             return new Generator(resource, baseCost, baseProduction, baseDelay);
         }
 
-        public void Produce()
+        public void TryProduce()
+        {
+            if (Progress.Value == 0f)
+            {
+                Produce();
+            }
+        }
+
+        private void Produce()
         {
             MainThreadDispatcher.StartUpdateMicroCoroutine(WaitForProduce());
         }
@@ -91,7 +103,13 @@ namespace Sources.Models
             }
 
             _progress.Value = 0f;
+            InvokeEnded();
             ProductionResource.Increase(ProductionValue);
+        }
+
+        private void InvokeEnded()
+        {
+            OnEnd?.Execute(ProductionValue);
         }
     }
 }

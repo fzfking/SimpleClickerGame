@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
+using Sources.GameLoop.Services;
 using Sources.GameLoop.States;
 using Sources.Presenters;
 using Sources.Presenters.HelperViews;
-using UniRx;
 using UnityEngine;
 
 namespace Sources.GameLoop
@@ -17,20 +15,27 @@ namespace Sources.GameLoop
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _currentState;
 
-        public GameStateMachine(StaticDataContainer dataContainer, ProgressBar progressBar,
-            ResourcePresenter resourcePresenter, Transform resourcesParent, GeneratorPresenter generatorPresenter,
+        public GameStateMachine(ILoaderService loaderService, ProgressBar progressBar, Transform resourcesParent,
             Transform generatorsParent)
         {
+            var staticDataContainer = loaderService.Load<StaticDataContainer>();
+            var resourcesDataContainer = staticDataContainer.ResourcesDataContainer;
+            var generatorsDataContainer = staticDataContainer.GeneratorsDataContainer;
+            var resourcePresenter = loaderService.Load<ResourcePresenter>();
+            var generatorPresenter = loaderService.Load<GeneratorPresenter>();
+            var popupService = new PopupService(loaderService.Load<Popup>(), generatorsParent.root);
+            
             _states = new Dictionary<Type, IExitableState>()
             {
                 [typeof(ResourcesInitState)] =
-                    new ResourcesInitState(this, dataContainer.ResourcesDataContainer, progressBar),
+                    new ResourcesInitState(this, resourcesDataContainer, progressBar),
                 [typeof(GeneratorsInitState)] =
-                    new GeneratorsInitState(this, dataContainer.GeneratorsDataContainer, progressBar),
+                    new GeneratorsInitState(this, generatorsDataContainer, progressBar),
                 [typeof(ResourcesViewInitState)] =
                     new ResourcesViewInitState(this, progressBar, resourcePresenter, resourcesParent),
                 [typeof(GeneratorViewsInitState)] =
                     new GeneratorViewsInitState(this, progressBar, generatorPresenter, generatorsParent),
+                [typeof(GameLoopState)] = new GameLoopState(popupService),
             };
         }
 
@@ -48,6 +53,11 @@ namespace Sources.GameLoop
             var newState = GetState<TState>();
             newState.Enter(payload);
             _currentState = newState;
+        }
+
+        public void Exit()
+        {
+            _currentState?.Exit();
         }
 
         private TState GetState<TState>() where TState : class, IExitableState => _states[typeof(TState)] as TState;

@@ -33,23 +33,23 @@ namespace Sources.Tests.EditorTests
             }).AddTo(_compositeDisposable);
             var generator = Generator.CreateMock(resource, 4, 1);
             Assert.AreEqual(0, resource.CurrentValue.Value);
-            generator.Produce();
+            generator.TryProduce();
             yield return null;
             Assert.AreEqual(1, resource.CurrentValue.Value);
             for (int i = 0; i < 20; i++)
             {
-                generator.Produce();
+                generator.TryProduce();
                 yield return null;
             }
 
             Assert.AreEqual(21, resource.CurrentValue.Value);
-            Assert.AreEqual(1, generator.Level);
+            Assert.AreEqual(1, generator.Level.Value);
             for (int i = 0; i < 2; i++)
             {
                 generator.TryUpgrade();
             }
 
-            Assert.AreEqual(3, generator.Level);
+            Assert.AreEqual(3, generator.Level.Value);
             _compositeDisposable.Dispose();
         }
 
@@ -67,7 +67,7 @@ namespace Sources.Tests.EditorTests
             {
                 _compositeDisposable.Clear();
             }).AddTo(_compositeDisposable);
-            generator.Produce();
+            generator.TryProduce();
             while (_compositeDisposable.Count > 0)
             {
                 yield return null;

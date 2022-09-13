@@ -1,8 +1,9 @@
 ﻿using UniRx;
+using Unity.Plastic.Newtonsoft.Json.Serialization;
 
 namespace Sources.Architecture.Interfaces
 {
-    public interface IGenerator: IVisualData, IProgressive
+    public interface IGenerator: IVisualData, IProgressive, IGeneratorProgress
     {
         IResource ProductionResource { get; }
         IResource CostResource { get; }
@@ -10,7 +11,7 @@ namespace Sources.Architecture.Interfaces
         double ProductionValue { get; }
         double UpgradeCost { get; }
         float DelayTime { get; }
-        void Produce();
+        void TryProduce();
         bool CanUpgrade(int levelValue);
         bool TryUpgrade();
     }

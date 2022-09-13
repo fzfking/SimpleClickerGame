@@ -20,3 +20,4 @@ MonoBehaviour:
   GeneratorsDataContainer:
     GeneratorDataArray:
     - {fileID: 11400000, guid: 048f82131965c8240be1219e5be166fd, type: 2}
+    - {fileID: 11400000, guid: e8d1d24bbed42bb4e990e757408de04a, type: 2}

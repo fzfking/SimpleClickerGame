@@ -1,8 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using DG.Tweening;
 using Sources.Architecture.Extensions;
 using Sources.Architecture.Interfaces;
-using Sources.Models;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -10,8 +10,10 @@ using UnityEngine.UI;
 
 namespace Sources.Presenters
 {
-    public class GeneratorPresenter : MonoBehaviour, IInitiable<IGenerator>
+    public class GeneratorPresenter : MonoBehaviour, IInitiable<IGenerator>, ILoadable
     {
+        public event Action<Vector2, double> Ended; 
+
         [SerializeField] private Image CostResourceIcon;
         [SerializeField] private Image ProductionResourceIcon;
         [SerializeField] private Image GeneratorIcon;
@@ -27,6 +29,7 @@ namespace Sources.Presenters
 
         private IGenerator _generator;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private RectTransform _rectTransform;
 
 
         public void Init(IGenerator data)
@@ -40,11 +43,19 @@ namespace Sources.Presenters
             
             _generator.Progress.Subscribe(UpdateProgress).AddTo(_compositeDisposable);
 
-            ProductionButton.onClick.AsObservable().Where(x => _generator.Progress.Value == 0f)
+            ProductionButton.onClick.AsObservable()
                 .Subscribe(x => Produce()).AddTo(_compositeDisposable);
             
             UpgradeButton.onClick.AsObservable().Where(x => _generator.CanUpgrade(1))
                 .Subscribe(x => Upgrade()).AddTo(_compositeDisposable);
+            
+            _rectTransform = ProductionButton.GetComponent<RectTransform>();
+            _generator.OnEnd.Subscribe(GeneratorOnEnded).AddTo(_compositeDisposable);
+        }
+
+        private void GeneratorOnEnded(double value)
+        {
+            Ended?.Invoke(_rectTransform.position, value);
         }
 
         private void Upgrade()
@@ -54,7 +65,7 @@ namespace Sources.Presenters
 
         private void Produce()
         {
-            _generator.Produce();
+            _generator.TryProduce();
         }
 
         private void UpdateProgress(float value)

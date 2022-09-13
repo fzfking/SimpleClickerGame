@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4687e0d78f84d4eab6f018644b22dca, type: 3}
-  m_Name: MoneyProducer
+  m_Name: GoldProducer
   m_EditorClassIdentifier: 
-  _name: Money Producer
+  _name: Gold Producer
   _description: 
-  _icon: {fileID: 21300000, guid: 26f6d0e08a861f74f91e9b38379619c9, type: 3}
-  _productionResource: {fileID: 11400000, guid: f88a85f3edf99fd4a96ff0881e90e817, type: 2}
-  _costResource: {fileID: 11400000, guid: 2309be1fd16965c48a1758c38ebf6517, type: 2}
-  _baseProduction: 1
-  _baseCost: 4
-  _baseDelay: 1
+  _icon: {fileID: 0}
+  _productionResource: {fileID: 11400000, guid: 2309be1fd16965c48a1758c38ebf6517, type: 2}
+  _costResource: {fileID: 11400000, guid: f88a85f3edf99fd4a96ff0881e90e817, type: 2}
+  _baseProduction: 2
+  _baseCost: 10
+  _baseDelay: 4
