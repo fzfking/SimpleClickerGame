@@ -77,7 +77,7 @@ namespace Sources.Presenters
         private void UpdateView(int level)
         {
             Level.text = $"{level}";
-            Cost.text = '-' +_generator.UpgradeCost.ToResourceFormat();
+            Cost.text = '-' +_generator.CostValue.ToResourceFormat();
             Production.text = '+' + _generator.ProductionValue.ToResourceFormat();
             Delay.text = _generator.DelayTime.ToString(CultureInfo.InvariantCulture) + 'S';
         }
@@ -85,6 +85,7 @@ namespace Sources.Presenters
         public void DeInit()
         {
             _compositeDisposable.Clear();
+            Ended = null;
         }
     }
 }

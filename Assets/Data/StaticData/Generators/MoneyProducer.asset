@@ -20,3 +20,4 @@ MonoBehaviour:
   _baseProduction: 1
   _baseCost: 4
   _baseDelay: 1
+  isUnlockedByDefault: 1

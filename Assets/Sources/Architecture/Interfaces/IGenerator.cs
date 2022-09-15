@@ -3,13 +3,11 @@ using Unity.Plastic.Newtonsoft.Json.Serialization;
 
 namespace Sources.Architecture.Interfaces
 {
-    public interface IGenerator: IVisualData, IProgressive, IGeneratorProgress
+    public interface IGenerator: IVisualData, IProgressive, IGeneratorProgress, IBuyable
     {
         IResource ProductionResource { get; }
-        IResource CostResource { get; }
         IReadOnlyReactiveProperty<int> Level { get; }
         double ProductionValue { get; }
-        double UpgradeCost { get; }
         float DelayTime { get; }
         void TryProduce();
         bool CanUpgrade(int levelValue);

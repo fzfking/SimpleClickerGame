@@ -11,12 +11,15 @@ namespace Sources.Data
         [SerializeField] private double _baseProduction;
         [SerializeField] private double _baseCost;
         [SerializeField] private float _baseDelay;
+        [SerializeField] private bool isUnlockedByDefault;
 
         public ResourceData ProductionResource => _productionResource;
         public ResourceData CostResource => _costResource;
         public double BaseProduction => _baseProduction;
         public double BaseCost => _baseCost;
         public float BaseDelay => _baseDelay;
-        
+        public bool IsUnlockedByDefault => isUnlockedByDefault;
+
+
     }
 }

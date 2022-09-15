@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc155ddd1a134ffc893a6afda0a51690, type: 3}
+  m_Name: GoldManager
+  m_EditorClassIdentifier: 
+  _name: Gold Manager
+  _description: Produces gold without your actions
+  _icon: {fileID: 21300000, guid: 9fdc0f82ca470134f84e2d01b88fb013, type: 3}
+  GeneratorData: {fileID: 11400000, guid: e8d1d24bbed42bb4e990e757408de04a, type: 2}
+  CostValue: 2
+  CostResource: {fileID: 11400000, guid: 2309be1fd16965c48a1758c38ebf6517, type: 2}

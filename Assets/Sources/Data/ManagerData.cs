@@ -6,8 +6,12 @@ namespace Sources.Data
     [CreateAssetMenu(fileName = "Manager", menuName = "Data/Create manager", order = 0)]
     public class ManagerData : VisualScriptableObject
     {
-        [SerializeField] private IGenerator _generator;
+        public GeneratorData Generator => GeneratorData;
+        public double Value => CostValue;
+        public ResourceData Resource => CostResource;
 
-        public IGenerator Generator => _generator;
+        [SerializeField] private GeneratorData GeneratorData;
+        [SerializeField] private double CostValue;
+        [SerializeField] private ResourceData CostResource;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Sources.Architecture.Extensions;
+﻿using System.Collections.Generic;
+using Sources.Architecture.Extensions;
 using Sources.Architecture.Interfaces;
 using Sources.Presenters;
 using UniRx;
@@ -8,16 +9,20 @@ namespace Sources.GameLoop.States
 {
     public class GameLoopState: IPayloadableState<GeneratorPresenter[]>
     {
-        private readonly IPopupService _popupService;
+        private readonly IServiceLocator _allServices;
+        private readonly List<IDeInitiable> _initiables;
+        private IPopupService _popupService;
         private GeneratorPresenter[] _generatorPresenters;
 
-        public GameLoopState(IPopupService popupService)
+        public GameLoopState(IServiceLocator allServices, List<IDeInitiable> initiables)
         {
-            _popupService = popupService;
+            _allServices = allServices;
+            _initiables = initiables;
         }
 
         public void Enter(GeneratorPresenter[] payload)
         {
+            _popupService = _allServices.Get<IPopupService>();
             _generatorPresenters = payload;
             foreach (var presenter in _generatorPresenters)
             {
@@ -27,9 +32,9 @@ namespace Sources.GameLoop.States
 
         public void Exit()
         {
-            foreach (var presenter in _generatorPresenters)
+            foreach (var initiable in _initiables)
             {
-                presenter.Ended -= InvokePopup;
+                initiable.DeInit();
             }
         }
 

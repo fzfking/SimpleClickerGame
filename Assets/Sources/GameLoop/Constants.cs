@@ -13,6 +13,7 @@ namespace Sources.GameLoop
             [typeof(ResourcePresenter)] = @"Assets/Data/StaticData/Presenters/ResourcePresenter.prefab",
             [typeof(StaticDataContainer)] = @"Assets/Data/StaticData/StaticDataContainer.asset",
             [typeof(GeneratorPresenter)] = @"Assets/Data/StaticData/Presenters/GeneratorPresenter.prefab",
+            [typeof(ManagerPresenter)] = @"Assets/Data/StaticData/Presenters/ManagerPresenter.prefab",
             [typeof(Popup)] = @"Assets/Data/StaticData/Helpers/Popup.prefab",
         };
     }

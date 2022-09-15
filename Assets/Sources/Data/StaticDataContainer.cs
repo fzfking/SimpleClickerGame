@@ -8,5 +8,7 @@ namespace Sources.Data
     {
         public ResourcesDataContainer ResourcesDataContainer;
         public GeneratorsDataContainer GeneratorsDataContainer;
+        public ManagersDataContainer ManagersDataContainer;
+        public UIData UIData;
     }
 }

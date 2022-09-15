@@ -1,6 +1,7 @@
 ﻿using System;
 using Sources.Architecture.Interfaces;
 using UnityEditor;
+using Object = UnityEngine.Object;
 
 namespace Sources.GameLoop.Services
 {

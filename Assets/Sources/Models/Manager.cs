@@ -12,17 +12,23 @@ namespace Sources.Models
         public Sprite Icon { get; }
         public IGenerator Generator => _generator;
         public bool IsActive => _isActive;
+        public double CostValue { get; }
+
+        public IResource CostResource { get; }
 
         private bool _isActive;
         private readonly IGenerator _generator;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        public Manager(IGenerator generator, ManagerData data)
+        public Manager(IGenerator generator, IResource costResource, ManagerData data, bool buyed)
         {
             _generator = generator;
+            CostValue = data.Value;
+            CostResource = costResource;
             Name = data.Name;
             Description = data.Description;
             Icon = data.Icon;
+            ChangeActive(buyed);
         }
 
         private Manager(IGenerator generator)

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using DG.Tweening;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Sources.Presenters.HelperViews
+namespace Sources.Data.StaticViews
 {
     public class ProgressBar : MonoBehaviour
     {

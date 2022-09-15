@@ -21,3 +21,8 @@ MonoBehaviour:
     GeneratorDataArray:
     - {fileID: 11400000, guid: 048f82131965c8240be1219e5be166fd, type: 2}
     - {fileID: 11400000, guid: e8d1d24bbed42bb4e990e757408de04a, type: 2}
+  ManagersDataContainer:
+    ManagerDataArray:
+    - {fileID: 11400000, guid: 44ea3db48ec6ec240b3179d6bb82bfb3, type: 2}
+  UIData:
+    UIPreset: {fileID: 5638931598197972745, guid: 92f7c21d635a99f49ad9af820d28cf49, type: 3}

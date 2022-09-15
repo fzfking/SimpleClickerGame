@@ -19,7 +19,7 @@ namespace Sources.Models
         public IReadOnlyReactiveProperty<int> Level => _level;
 
         public double ProductionValue => _baseProduction * Level.Value;
-        public double UpgradeCost => _baseUpgradeCost * Level.Value;
+        public double CostValue => _baseUpgradeCost * (Level.Value + 1);
         public float DelayTime => _baseDelayTime * 1f;
         public IReadOnlyReactiveProperty<float> Progress => _progress;
 
@@ -30,7 +30,7 @@ namespace Sources.Models
         private readonly ReactiveProperty<int> _level;
 
 
-        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level)
+        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0)
         {
             ProductionResource = productionResource;
             _level = new ReactiveProperty<int>(level);
@@ -78,12 +78,12 @@ namespace Sources.Models
 
         public bool CanUpgrade(int levelValue)
         {
-            return (CostResource.CurrentValue.Value - UpgradeCost) >= 0f;
+            return (CostResource.CurrentValue.Value - CostValue) >= 0f;
         }
 
         public bool TryUpgrade()
         {
-            if (CostResource.TrySpend(UpgradeCost))
+            if (CostResource.TrySpend(CostValue))
             {
                 _level.Value++;
                 return true;
