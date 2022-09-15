@@ -44,7 +44,7 @@ namespace Sources.GameLoop.States
         private IEnumerator InitPopupService(ILoaderService loaderService)
         {
             var popup = loaderService.Load<Popup>();
-            var popupParent = loaderService.Load<StaticDataContainer>().UIData.Get<IGenerator>().root;
+            var popupParent = loaderService.Load<StaticDataContainer>().UIData.Get<IGenerator>().parent;
             IPopupService popupService = new PopupService(popup, popupParent);
             _serviceLocator.Add(popupService);
             yield return null;
