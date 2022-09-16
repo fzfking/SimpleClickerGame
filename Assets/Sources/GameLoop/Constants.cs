@@ -15,6 +15,7 @@ namespace Sources.GameLoop
             [typeof(GeneratorPresenter)] = @"Assets/Data/StaticData/Presenters/GeneratorPresenter.prefab",
             [typeof(ManagerPresenter)] = @"Assets/Data/StaticData/Presenters/ManagerPresenter.prefab",
             [typeof(Popup)] = @"Assets/Data/StaticData/Helpers/Popup.prefab",
+            [typeof(LockedGeneratorPresenter)] = @"Assets/Data/StaticData/Presenters/LockedGeneratorPresenter.prefab",
         };
     }
 }

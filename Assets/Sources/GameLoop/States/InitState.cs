@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sources.Architecture.Interfaces;
@@ -10,6 +11,7 @@ using Sources.Presenters;
 using Sources.Presenters.HelperViews;
 using UniRx;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Sources.GameLoop.States
 {
@@ -25,6 +27,9 @@ namespace Sources.GameLoop.States
         private readonly Dictionary<ManagerData, IManager> _managers;
         private ILoaderService _loaderService;
 
+        private readonly Dictionary<IGenerator, GeneratorPresenter> _generatorPresenters =
+            new Dictionary<IGenerator, GeneratorPresenter>();
+
         public InitState(GameStateMachine stateMachine, List<IDeInitiable> initiables, IServiceLocator allServices)
         {
             _stateMachine = stateMachine;
@@ -37,7 +42,6 @@ namespace Sources.GameLoop.States
 
         public void Exit()
         {
-            
         }
 
         public void Enter()
@@ -61,7 +65,7 @@ namespace Sources.GameLoop.States
             yield return InitGenerators();
             yield return InitManagers();
         }
-        
+
         private IEnumerator InitResources()
         {
             var resourcesData = _dataContainer.ResourcesDataContainer.Resources;
@@ -107,6 +111,7 @@ namespace Sources.GameLoop.States
             yield return InitPresenters<ResourcePresenter, IResource>(_resources.Values.ToArray());
             yield return InitPresenters<GeneratorPresenter, IGenerator>(_generators.Values.ToArray());
             yield return InitPresenters<ManagerPresenter, IManager>(_managers.Values.ToArray());
+            yield return InitLockedGeneratorPresenters();
         }
 
         private IEnumerator InitPresenters<TPresenter, TData>(TData[] values)
@@ -114,11 +119,32 @@ namespace Sources.GameLoop.States
             where TData : IVisualData
         {
             var prefab = _allServices.Get<ILoaderService>().Load<TPresenter>();
+            var isGenerator = prefab.GetType() == typeof(GeneratorPresenter);
             foreach (var value in values)
             {
                 var presenter = Object.Instantiate(prefab, _dataContainer.UIData.Get<TData>());
                 presenter.Init(value);
                 _initiables.Add(presenter);
+                if (isGenerator)
+                {
+                    _generatorPresenters.Add((IGenerator)value, presenter as GeneratorPresenter);
+                }
+            }
+
+            yield return null;
+        }
+
+        private IEnumerator InitLockedGeneratorPresenters()
+        {
+            var prefab = _allServices.Get<ILoaderService>().Load<LockedGeneratorPresenter>();
+            var parent = _dataContainer.UIData.Get<IGenerator>();
+            foreach (var pair in _generatorPresenters.Where(x=>x.Key.Level.Value == 0))
+            {
+                pair.Value.gameObject.SetActive(false);
+                var locked = GameObject.Instantiate(prefab, parent);
+                locked.Init(pair.Key);
+                locked.Link(pair.Value);
+                _initiables.Add(locked);
             }
 
             yield return null;

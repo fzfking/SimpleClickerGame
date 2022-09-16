@@ -45,9 +45,23 @@ namespace Sources.Presenters
 
         private void SetLockedView()
         {
-            UnlockButton.interactable = true;
-            UnlockButtonText.text = "Buy";
-            UnlockButton.onClick.AsObservable().Subscribe(x => TryBuy()).AddTo(_compositeDisposable);
+            _manager.Generator.Level.Where(x => x > 0).Take(1).Subscribe(x => SetUnlockedGeneratorView())
+                .AddTo(_compositeDisposable);
+            _manager.Generator.Level.Where(x => x == 0).Take(1).Subscribe(x => SetLockedGeneratorView())
+                .AddTo(_compositeDisposable);
+
+            void SetLockedGeneratorView()
+            {
+                UnlockButton.interactable = false;
+                UnlockButtonText.text = $"Buy {_manager.Generator.Name} first";
+            }
+
+            void SetUnlockedGeneratorView()
+            {
+                UnlockButton.interactable = true;
+                UnlockButtonText.text = "Buy";
+                UnlockButton.onClick.AsObservable().Subscribe(x => TryBuy()).AddTo(_compositeDisposable);
+            }
         }
 
         private void SetBuyedView()
