@@ -30,6 +30,7 @@ namespace Sources.Presenters
         private IGenerator _generator;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private RectTransform _rectTransform;
+        private int _levelsAmount = 1;
 
 
         public void Init(IGenerator data)
@@ -51,6 +52,15 @@ namespace Sources.Presenters
             
             _rectTransform = ProductionButton.GetComponent<RectTransform>();
             _generator.OnEnd.Subscribe(GeneratorOnEnded).AddTo(_compositeDisposable);
+            _generator.CostResource.CurrentValue.Subscribe(x=> ChangeLevelsAmount(_levelsAmount))
+                .AddTo(_compositeDisposable);
+        }
+
+        public void ChangeLevelsAmount(int levels)
+        {
+            _levelsAmount = levels;
+            BuyAmount.text = levels == -1 ? "Max" : $"+{levels.ToString()}";
+            UpdateLevelsCost();
         }
 
         private void GeneratorOnEnded(double value)
@@ -60,7 +70,7 @@ namespace Sources.Presenters
 
         private void Upgrade()
         {
-            _generator.TryUpgrade();
+            _generator.TryUpgrade(_levelsAmount);
         }
 
         private void Produce()
@@ -77,9 +87,14 @@ namespace Sources.Presenters
         private void UpdateView(int level)
         {
             Level.text = $"{level}";
-            Cost.text = '-' +_generator.CostValue.ToResourceFormat();
+            UpdateLevelsCost();
             Production.text = '+' + _generator.ProductionValue.ToResourceFormat();
             Delay.text = _generator.DelayTime.ToString(CultureInfo.InvariantCulture) + 'S';
+        }
+
+        private void UpdateLevelsCost()
+        {
+            Cost.text = '-' + _generator.GetCost(_levelsAmount).ToResourceFormat();
         }
 
         public void DeInit()

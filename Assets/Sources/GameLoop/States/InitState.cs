@@ -55,6 +55,7 @@ namespace Sources.GameLoop.States
         {
             yield return InitModels();
             yield return InitPresenters();
+            yield return InitBuyAmountButton();
             _stateMachine.Enter<GameLoopState, GeneratorPresenter[]>(_initiables.OfType<GeneratorPresenter>()
                 .ToArray());
         }
@@ -147,6 +148,15 @@ namespace Sources.GameLoop.States
                 _initiables.Add(locked);
             }
 
+            yield return null;
+        }
+
+        private IEnumerator InitBuyAmountButton()
+        {
+            var button = _dataContainer.UIData.BuyAmountButton;
+            var buyService = _allServices.Get<IBuyService>();
+            button.Init(buyService);
+            buyService.Enable();
             yield return null;
         }
     }

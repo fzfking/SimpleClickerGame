@@ -46,7 +46,7 @@ namespace Sources.Tests.EditorTests
             Assert.AreEqual(1, generator.Level.Value);
             for (int i = 0; i < 2; i++)
             {
-                generator.TryUpgrade();
+                generator.TryUpgrade(1);
             }
 
             Assert.AreEqual(3, generator.Level.Value);

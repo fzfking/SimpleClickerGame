@@ -20,7 +20,7 @@ namespace Sources.Presenters
         public void Init(IGenerator data)
         {
             _generator = data;
-            UnlockButton.onClick.AsObservable().Subscribe(x=> _generator.TryUpgrade()).AddTo(_compositeDisposable);
+            UnlockButton.onClick.AsObservable().Subscribe(x=> _generator.TryUpgrade(1)).AddTo(_compositeDisposable);
         }
 
         public void Link(GeneratorPresenter generatorPresenter)

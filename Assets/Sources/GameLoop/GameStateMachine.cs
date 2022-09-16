@@ -20,7 +20,7 @@ namespace Sources.GameLoop
 
             _states = new Dictionary<Type, IExitableState>()
             {
-                [typeof(InitServicesState)] = new InitServicesState(this, _serviceLocator),
+                [typeof(InitServicesState)] = new InitServicesState(this, _serviceLocator, _initiables),
                 [typeof(InitState)] = new InitState(this, _initiables, _serviceLocator),
                 [typeof(GameLoopState)] = new GameLoopState(_serviceLocator, _initiables),
             };

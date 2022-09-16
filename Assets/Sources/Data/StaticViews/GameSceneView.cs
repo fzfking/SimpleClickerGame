@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sources.Architecture.Interfaces;
+using Sources.Presenters.HelperViews;
 using UnityEngine;
 
 namespace Sources.Data.StaticViews
@@ -8,11 +9,13 @@ namespace Sources.Data.StaticViews
     public class GameSceneView : MonoBehaviour
     {
         public ProgressBar Progress => ProgressBar;
+        public BuyAmountButton BuyAmount => BuyAmountButton;
         
         [SerializeField] private Transform ResourcesParent;
         [SerializeField] private Transform GeneratorsParent;
         [SerializeField] private Transform ManagersParent;
         [SerializeField] private ProgressBar ProgressBar;
+        [SerializeField] private BuyAmountButton BuyAmountButton; 
         
         private IReadOnlyDictionary<Type, Transform> _parents;
 

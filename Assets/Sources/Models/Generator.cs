@@ -81,15 +81,35 @@ namespace Sources.Models
             return (CostResource.CurrentValue.Value - CostValue) >= 0f;
         }
 
-        public bool TryUpgrade()
+        public double GetCost(int levels)
         {
-            if (CostResource.TrySpend(CostValue))
+            if (levels == -1)
             {
-                _level.Value++;
+                return MaxLevelCanBuy() * CostValue;
+            }
+
+            return CostValue * levels;
+        }
+
+        public bool TryUpgrade(int levelAmount)
+        {
+            var amount = levelAmount;
+            if (levelAmount == -1)
+            {
+                amount = MaxLevelCanBuy();
+            }
+            if (CostResource.TrySpend(GetCost(amount)))
+            {
+                _level.Value += amount;
                 return true;
             }
 
             return false;
+        }
+
+        private int MaxLevelCanBuy()
+        {
+            return (int)(CostResource.CurrentValue.Value / CostValue);
         }
 
         private IEnumerator WaitForProduce()

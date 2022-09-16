@@ -16,4 +16,12 @@ namespace Sources.Architecture.Interfaces
     {
         TResource Load<TResource>() where TResource : class, ILoadable;
     }
+
+    public interface IBuyService : IService
+    {
+        void Enable();
+        void GoToNextAmount();
+        void ChangeAmount(BuyAmount amount);
+        string GetCurrentAmount();
+    }
 }

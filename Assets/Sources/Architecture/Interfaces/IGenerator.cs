@@ -11,6 +11,7 @@ namespace Sources.Architecture.Interfaces
         float DelayTime { get; }
         void TryProduce();
         bool CanUpgrade(int levelValue);
-        bool TryUpgrade();
+        bool TryUpgrade(int levels);
+        double GetCost(int levels);
     }
 }
