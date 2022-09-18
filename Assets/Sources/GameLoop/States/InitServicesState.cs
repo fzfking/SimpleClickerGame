@@ -38,6 +38,7 @@ namespace Sources.GameLoop.States
             var loaderService = InitLoaderService();
             yield return InitPopupService(loaderService);
             yield return InitBuyService();
+            yield return InitInformationService(loaderService);
             _stateMachine.Enter<InitState>();
         }
 
@@ -62,6 +63,14 @@ namespace Sources.GameLoop.States
             IBuyService buyService =
                 new BuyService(_initiables.OfType<GeneratorPresenter>());
             _serviceLocator.Add(buyService);
+            yield return null;
+        }
+
+        private IEnumerator InitInformationService(ILoaderService loaderService)
+        {
+            var window = loaderService.Load<StaticDataContainer>().UIData.InformationWindow;
+            IInformationService informationService = new InformationService(window);
+            _serviceLocator.Add(informationService);
             yield return null;
         }
     }

@@ -56,6 +56,7 @@ namespace Sources.GameLoop.States
             yield return InitModels();
             yield return InitPresenters();
             yield return InitBuyAmountButton();
+            yield return LinkInformationalsToService();
             _stateMachine.Enter<GameLoopState, GeneratorPresenter[]>(_initiables.OfType<GeneratorPresenter>()
                 .ToArray());
         }
@@ -157,6 +158,22 @@ namespace Sources.GameLoop.States
             var buyService = _allServices.Get<IBuyService>();
             button.Init(buyService);
             buyService.Enable();
+            yield return null;
+        }
+
+        private IEnumerator LinkInformationalsToService()
+        {
+            var informationals = _initiables.OfType<IInformational>();
+
+            void InvokeInformationView(IVisualData data)
+            {
+                _allServices.Get<IInformationService>().ShowInfo(data);
+            }
+            foreach (var informational in informationals)
+            {
+                informational.InfoNeeded += InvokeInformationView;
+            }
+
             yield return null;
         }
     }

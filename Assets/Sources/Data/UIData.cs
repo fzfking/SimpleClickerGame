@@ -15,5 +15,6 @@ namespace Sources.Data
         public Transform Get<T>() where T : IVisualData => Instance.Get<T>();
         public ProgressBar ProgressBar => Instance.Progress;
         public BuyAmountButton BuyAmountButton => Instance.BuyAmount;
+        public InformationWindow InformationWindow => Instance.InformationWindow;
     }
 }

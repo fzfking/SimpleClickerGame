@@ -10,9 +10,10 @@ using UnityEngine.UI;
 
 namespace Sources.Presenters
 {
-    public class GeneratorPresenter : MonoBehaviour, IInitiable<IGenerator>, ILoadable
+    public class GeneratorPresenter : MonoBehaviour, IInitiable<IGenerator>, ILoadable, IInformational
     {
-        public event Action<Vector2, double> Ended; 
+        public event Action<Vector2, double> Ended;
+        public event Action<IVisualData> InfoNeeded;
 
         [SerializeField] private Image CostResourceIcon;
         [SerializeField] private Image ProductionResourceIcon;
@@ -39,20 +40,23 @@ namespace Sources.Presenters
             CostResourceIcon.sprite = _generator.CostResource.Icon;
             ProductionResourceIcon.sprite = _generator.ProductionResource.Icon;
             GeneratorIcon.sprite = _generator.Icon;
-            
+
             _generator.Level.Subscribe(UpdateView).AddTo(_compositeDisposable);
-            
+
             _generator.Progress.Subscribe(UpdateProgress).AddTo(_compositeDisposable);
 
             ProductionButton.onClick.AsObservable()
                 .Subscribe(x => Produce()).AddTo(_compositeDisposable);
-            
+
             UpgradeButton.onClick.AsObservable().Where(x => _generator.CanUpgrade(1))
                 .Subscribe(x => Upgrade()).AddTo(_compositeDisposable);
-            
+
             _rectTransform = ProductionButton.GetComponent<RectTransform>();
             _generator.OnEnd.Subscribe(GeneratorOnEnded).AddTo(_compositeDisposable);
-            _generator.CostResource.CurrentValue.Subscribe(x=> ChangeLevelsAmount(_levelsAmount))
+            _generator.CostResource.CurrentValue.Subscribe(x => ChangeLevelsAmount(_levelsAmount))
+                .AddTo(_compositeDisposable);
+
+            InfoButton.onClick.AsObservable().Subscribe(x => InfoNeeded?.Invoke(_generator))
                 .AddTo(_compositeDisposable);
         }
 
@@ -81,7 +85,7 @@ namespace Sources.Presenters
         private void UpdateProgress(float value)
         {
             ProgressSlider.DOValue(value, 0.01f);
-            Delay.text = ((1-value) * _generator.DelayTime).ToString("##0.##", CultureInfo.InvariantCulture) + 'S';
+            Delay.text = ((1 - value) * _generator.DelayTime).ToString("##0.##", CultureInfo.InvariantCulture) + 'S';
         }
 
         private void UpdateView(int level)
@@ -101,6 +105,7 @@ namespace Sources.Presenters
         {
             _compositeDisposable.Clear();
             Ended = null;
+            InfoNeeded = null;
         }
     }
 }

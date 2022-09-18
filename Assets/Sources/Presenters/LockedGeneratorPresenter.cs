@@ -41,8 +41,9 @@ namespace Sources.Presenters
             if (_compositeDisposable.Count > 0)
             {
                 _compositeDisposable.Clear();
-                gameObject.SetActive(false);
             }
+            gameObject.SetActive(false);
+
         }
     }
 }
