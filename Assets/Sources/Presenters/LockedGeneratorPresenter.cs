@@ -38,11 +38,11 @@ namespace Sources.Presenters
 
         public void DeInit()
         {
+            gameObject.SetActive(false);
             if (_compositeDisposable.Count > 0)
             {
                 _compositeDisposable.Clear();
             }
-            gameObject.SetActive(false);
 
         }
     }

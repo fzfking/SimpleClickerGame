@@ -12,17 +12,19 @@ namespace Sources.GameLoop
         private IExitableState _currentState;
         private IServiceLocator _serviceLocator;
         private List<IDeInitiable> _initiables;
+        private List<IVisualData> _saveables;
 
         public GameStateMachine()
         {
             _serviceLocator = new ServiceLocator();
             _initiables = new List<IDeInitiable>();
+            _saveables = new List<IVisualData>();
 
             _states = new Dictionary<Type, IExitableState>()
             {
                 [typeof(InitServicesState)] = new InitServicesState(this, _serviceLocator, _initiables),
-                [typeof(InitState)] = new InitState(this, _initiables, _serviceLocator),
-                [typeof(GameLoopState)] = new GameLoopState(_serviceLocator, _initiables),
+                [typeof(InitState)] = new InitState(this, _initiables, _serviceLocator, _saveables),
+                [typeof(GameLoopState)] = new GameLoopState(_serviceLocator, _initiables, _saveables),
             };
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sources.Architecture.Extensions;
 using Sources.Architecture.Interfaces;
 using Sources.Presenters;
@@ -7,17 +8,19 @@ using UnityEngine;
 
 namespace Sources.GameLoop.States
 {
-    public class GameLoopState: IPayloadableState<GeneratorPresenter[]>
+    public class GameLoopState : IPayloadableState<GeneratorPresenter[]>
     {
         private readonly IServiceLocator _allServices;
         private readonly List<IDeInitiable> _initiables;
+        private readonly List<IVisualData> _saveables;
         private IPopupService _popupService;
         private GeneratorPresenter[] _generatorPresenters;
 
-        public GameLoopState(IServiceLocator allServices, List<IDeInitiable> initiables)
+        public GameLoopState(IServiceLocator allServices, List<IDeInitiable> initiables, List<IVisualData> saveables)
         {
             _allServices = allServices;
             _initiables = initiables;
+            _saveables = saveables;
         }
 
         public void Enter(GeneratorPresenter[] payload)
@@ -32,9 +35,22 @@ namespace Sources.GameLoop.States
 
         public void Exit()
         {
+            var progressSaver = _allServices.Get<IProgressSaverService>();
+            SaveProgress<IResource>(progressSaver);
+            SaveProgress<IGenerator>(progressSaver);
+            SaveProgress<IManager>(progressSaver);
+
             foreach (var initiable in _initiables)
             {
                 initiable.DeInit();
+            }
+        }
+
+        private void SaveProgress<T>(IProgressSaverService progressSaver) where T: IVisualData
+        {
+            foreach (var saveable in _saveables.OfType<T>())
+            {
+                progressSaver.Save(saveable);
             }
         }
 

@@ -30,7 +30,7 @@ namespace Sources.Models
         private readonly ReactiveProperty<int> _level;
 
 
-        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0)
+        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0, float progress = 0)
         {
             ProductionResource = productionResource;
             _level = new ReactiveProperty<int>(level);
@@ -41,8 +41,12 @@ namespace Sources.Models
             _baseUpgradeCost = data.BaseCost;
             _baseDelayTime = data.BaseDelay;
             CostResource = costResource;
-            _progress = new ReactiveProperty<float>(0);
+            _progress = new ReactiveProperty<float>(progress);
             OnEnd = new ReactiveCommand<double>(Progress.Select(p => p == 0f).AsObservable(), true);
+            if (_progress.Value != 0f)
+            {
+                Produce();
+            }
         }
 
         private Generator(IResource resource, double baseCost, double baseProduction, float baseDelay)
@@ -114,11 +118,9 @@ namespace Sources.Models
 
         private IEnumerator WaitForProduce()
         {
-            var timePassed = 0f;
-            while (timePassed < DelayTime)
+            while (_progress.Value < 1f)
             {
-                timePassed += Time.deltaTime;
-                _progress.Value = timePassed / DelayTime;
+                _progress.Value += Time.deltaTime / DelayTime;
                 yield return null;
             }
 
