@@ -59,10 +59,18 @@ namespace Sources.GameLoop.States
 
         private IEnumerator InitAll()
         {
+            var progressBar = _dataContainer.UIData.ProgressBar;
+            progressBar.UpdateView(0f, "Loading models...");
             yield return InitModels();
+            progressBar.UpdateView(0.25f, "Loading presenters...");
             yield return InitPresenters();
+            progressBar.UpdateView(0.5f, "Loading buy mode button...");
             yield return InitBuyAmountButton();
+            progressBar.UpdateView(0.75f, "Loading information windows...");
             yield return LinkInformationalsToService();
+            progressBar.UpdateView(1f, "Almost done...");
+            yield return null;
+            progressBar.gameObject.SetActive(false);
             _stateMachine.Enter<GameLoopState, GeneratorPresenter[]>(_initiables.OfType<GeneratorPresenter>()
                 .ToArray());
         }
