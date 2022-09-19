@@ -11,6 +11,7 @@ namespace Sources.Data.StaticViews
         public ProgressBar Progress => ProgressBar;
         public BuyAmountButton BuyAmount => BuyAmountButton;
         public InformationWindow InformationWindow => InfoWindow;
+        public OfflineProductionWindow OfflineProductionWindow => OfflineProduction;
         
         [SerializeField] private Transform ResourcesParent;
         [SerializeField] private Transform GeneratorsParent;
@@ -18,6 +19,7 @@ namespace Sources.Data.StaticViews
         [SerializeField] private ProgressBar ProgressBar;
         [SerializeField] private BuyAmountButton BuyAmountButton;
         [SerializeField] private InformationWindow InfoWindow;
+        [SerializeField] private OfflineProductionWindow OfflineProduction;
         
         private IReadOnlyDictionary<Type, Transform> _parents;
 

@@ -16,5 +16,6 @@ namespace Sources.Data
         public ProgressBar ProgressBar => Instance.Progress;
         public BuyAmountButton BuyAmountButton => Instance.BuyAmount;
         public InformationWindow InformationWindow => Instance.InformationWindow;
+        public OfflineProductionWindow OfflineProductionWindow => Instance.OfflineProductionWindow;
     }
 }

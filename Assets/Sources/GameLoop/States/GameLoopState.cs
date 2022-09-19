@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Sources.Architecture.Extensions;
 using Sources.Architecture.Interfaces;
@@ -39,6 +41,8 @@ namespace Sources.GameLoop.States
             SaveProgress<IResource>(progressSaver);
             SaveProgress<IGenerator>(progressSaver);
             SaveProgress<IManager>(progressSaver);
+            PlayerPrefs.SetString("ExitTime", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            PlayerPrefs.Save();
 
             foreach (var initiable in _initiables)
             {

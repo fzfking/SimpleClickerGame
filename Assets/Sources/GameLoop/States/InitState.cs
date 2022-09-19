@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Sources.Architecture.Extensions;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
 using Sources.Data.ProgressContainers;
@@ -121,6 +123,15 @@ namespace Sources.GameLoop.States
         {
             var managersData = _dataContainer.ManagersDataContainer.Managers;
             var progressLoader = _allServices.Get<IProgressLoaderService>();
+            var offlineProductionWindow = _dataContainer.UIData.OfflineProductionWindow;
+            var exitTime =
+                DateTime.Parse(PlayerPrefs
+                        .GetString("ExitTime", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                    DateTimeFormatInfo.InvariantInfo);
+            var timePassed = DateTime.Now - exitTime;
+            bool isProducedAnyResourceOffline = false;
+            offlineProductionWindow.gameObject.SetActive(true);
+            offlineProductionWindow.SetTimePassed(timePassed);
             foreach (var managerData in managersData)
             {
                 ManagerProgressContainer loadedData =
@@ -133,12 +144,40 @@ namespace Sources.GameLoop.States
                 var manager = new Manager(_generators[managerData.Generator],
                     _resources[managerData.Resource],
                     managerData, loadedData.IsBuyed);
+
+                if (manager.IsActive && exitTime < DateTime.Now)
+                {
+                    CalculateOfflineProduction(timePassed, manager, offlineProductionWindow,
+                        ref isProducedAnyResourceOffline);
+                }
+
                 _initiables.Add(manager);
                 _managers.Add(managerData, manager);
                 _saveables.Add(manager);
             }
 
+            if (!isProducedAnyResourceOffline)
+            {
+                _dataContainer.UIData.OfflineProductionWindow.gameObject.SetActive(false);
+            }
+
             yield return null;
+        }
+
+        private static void CalculateOfflineProduction(TimeSpan timePassed, Manager manager,
+            OfflineProductionWindow offlineProductionWindow, ref bool isProducedAnyResourceOffline)
+        {
+            var producedCount = (int)(timePassed.TotalSeconds / manager.Generator.DelayTime);
+            if (producedCount == 0)
+            {
+                return;
+            }
+
+            var producedValue = producedCount * manager.Generator.ProductionValue;
+            offlineProductionWindow.Add(manager.Generator.ProductionResource.Icon,
+                $"+{producedValue.ToResourceFormat()}");
+            manager.Generator.ProductionResource.Increase(producedValue);
+            isProducedAnyResourceOffline = true;
         }
 
         private IEnumerator InitPresenters()
