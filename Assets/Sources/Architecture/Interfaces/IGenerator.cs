@@ -1,5 +1,4 @@
 ﻿using UniRx;
-using Unity.Plastic.Newtonsoft.Json.Serialization;
 
 namespace Sources.Architecture.Interfaces
 {

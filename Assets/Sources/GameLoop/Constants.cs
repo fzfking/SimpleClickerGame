@@ -10,12 +10,12 @@ namespace Sources.GameLoop
     {
         public static readonly Dictionary<Type, string> Paths = new Dictionary<Type, string>()
         {
-            [typeof(ResourcePresenter)] = @"Assets/Data/StaticData/Presenters/ResourcePresenter.prefab",
-            [typeof(StaticDataContainer)] = @"Assets/Data/StaticData/StaticDataContainer.asset",
-            [typeof(GeneratorPresenter)] = @"Assets/Data/StaticData/Presenters/GeneratorPresenter.prefab",
-            [typeof(ManagerPresenter)] = @"Assets/Data/StaticData/Presenters/ManagerPresenter.prefab",
-            [typeof(Popup)] = @"Assets/Data/StaticData/Helpers/Popup.prefab",
-            [typeof(LockedGeneratorPresenter)] = @"Assets/Data/StaticData/Presenters/LockedGeneratorPresenter.prefab",
+            [typeof(ResourcePresenter)] = @"StaticData/Presenters/ResourcePresenter",
+            [typeof(StaticDataContainer)] = @"StaticData/StaticDataContainer",
+            [typeof(GeneratorPresenter)] = @"StaticData/Presenters/GeneratorPresenter",
+            [typeof(ManagerPresenter)] = @"StaticData/Presenters/ManagerPresenter",
+            [typeof(Popup)] = @"StaticData/Helpers/Popup",
+            [typeof(LockedGeneratorPresenter)] = @"StaticData/Presenters/LockedGeneratorPresenter",
         };
     }
 }

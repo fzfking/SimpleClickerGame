@@ -18,10 +18,11 @@ namespace Sources.GameLoop
         private void Awake()
         {
             _gameStateMachine = new GameStateMachine();
+            Input.backButtonLeavesApp = true;
             _gameStateMachine.Enter<InitServicesState>();
         }
 
-        private void OnDestroy()
+        private void OnApplicationQuit()
         {
             _gameStateMachine.Exit();
         }
