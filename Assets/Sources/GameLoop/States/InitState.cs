@@ -6,9 +6,7 @@ using System.Linq;
 using Sources.Architecture.Extensions;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
-using Sources.Data.ProgressContainers;
 using Sources.Data.StaticViews;
-using Sources.GameLoop.Services;
 using Sources.Models;
 using Sources.Presenters;
 using Sources.Presenters.HelperViews;
@@ -25,7 +23,7 @@ namespace Sources.GameLoop.States
         private ProgressBar _progressBar;
         private readonly List<IDeInitiable> _initiables;
         private readonly IServiceLocator _allServices;
-        private readonly List<IVisualData> _saveables;
+        private readonly List<ISaveable> _saveables;
         private readonly Dictionary<ResourceData, IResource> _resources;
         private readonly Dictionary<GeneratorData, IGenerator> _generators;
         private readonly Dictionary<ManagerData, IManager> _managers;
@@ -35,7 +33,7 @@ namespace Sources.GameLoop.States
             new Dictionary<IGenerator, GeneratorPresenter>();
 
         public InitState(GameStateMachine stateMachine, List<IDeInitiable> initiables, IServiceLocator allServices,
-            List<IVisualData> saveables)
+            List<ISaveable> saveables)
         {
             _stateMachine = stateMachine;
             _initiables = initiables;
@@ -85,17 +83,10 @@ namespace Sources.GameLoop.States
         private IEnumerator InitResources()
         {
             var resourcesData = _dataContainer.ResourcesDataContainer.Resources;
-            var progressLoader = _allServices.Get<IProgressLoaderService>();
             foreach (var resourceData in resourcesData)
             {
-                ResourceProgressContainer loadedData =
-                    progressLoader.Load<IResource>(resourceData.Name) as ResourceProgressContainer;
-                if (loadedData == null)
-                {
-                    throw new Exception($"Cannot load resource data {resourceData.Name}");
-                }
 
-                IResource resource = new Resource(loadedData.Value, resourceData);
+                IResource resource = Resource.Load(resourceData);
                 _resources.Add(resourceData, resource);
                 _saveables.Add(resource);
             }
@@ -106,20 +97,11 @@ namespace Sources.GameLoop.States
         private IEnumerator InitGenerators()
         {
             var generatorsData = _dataContainer.GeneratorsDataContainer.Generators;
-            var progressLoader = _allServices.Get<IProgressLoaderService>();
             foreach (var generatorData in generatorsData)
             {
-                GeneratorProgressContainer loadedData =
-                    progressLoader.Load<IGenerator>(generatorData.Name) as GeneratorProgressContainer;
-                if (loadedData == null)
-                {
-                    throw new Exception($"Cannot load generator data {generatorData.Name}");
-                }
-
-                var level = loadedData.Level > 0 ? loadedData.Level : generatorData.IsUnlockedByDefault ? 1 : 0;
-                IGenerator generator = new Generator(generatorData,
+                IGenerator generator = Generator.Load(generatorData,
                     _resources[generatorData.ProductionResource],
-                    _resources[generatorData.CostResource], level, loadedData.Progress);
+                    _resources[generatorData.CostResource]);
                 _generators.Add(generatorData, generator);
                 _saveables.Add(generator);
             }
@@ -130,7 +112,6 @@ namespace Sources.GameLoop.States
         private IEnumerator InitManagers()
         {
             var managersData = _dataContainer.ManagersDataContainer.Managers;
-            var progressLoader = _allServices.Get<IProgressLoaderService>();
             var offlineProductionWindow = _dataContainer.UIData.OfflineProductionWindow;
             var exitTime =
                 DateTime.Parse(PlayerPrefs
@@ -142,16 +123,9 @@ namespace Sources.GameLoop.States
             offlineProductionWindow.SetTimePassed(timePassed);
             foreach (var managerData in managersData)
             {
-                ManagerProgressContainer loadedData =
-                    progressLoader.Load<IManager>(managerData.Name) as ManagerProgressContainer;
-                if (loadedData == null)
-                {
-                    throw new Exception($"Cannot load generator data {managerData.Name}");
-                }
-
-                var manager = new Manager(_generators[managerData.Generator],
-                    _resources[managerData.Resource],
-                    managerData, loadedData.IsBuyed);
+                var manager = Manager.Load(managerData,
+                    _generators[managerData.Generator],
+                    _resources[managerData.Resource]);
 
                 if (manager.IsActive && exitTime < DateTime.Now)
                 {

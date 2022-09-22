@@ -1,7 +1,7 @@
 ﻿namespace Sources.Architecture.Interfaces
 {
-    public interface IProgressContainer
+    public interface ISaveable
     {
-        
+        void Save();
     }
 }

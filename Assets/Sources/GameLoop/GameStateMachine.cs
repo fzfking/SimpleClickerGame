@@ -10,15 +10,15 @@ namespace Sources.GameLoop
     {
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _currentState;
-        private IServiceLocator _serviceLocator;
-        private List<IDeInitiable> _initiables;
-        private List<IVisualData> _saveables;
+        private readonly IServiceLocator _serviceLocator;
+        private readonly List<IDeInitiable> _initiables;
+        private readonly List<ISaveable> _saveables;
 
         public GameStateMachine()
         {
             _serviceLocator = new ServiceLocator();
             _initiables = new List<IDeInitiable>();
-            _saveables = new List<IVisualData>();
+            _saveables = new List<ISaveable>();
 
             _states = new Dictionary<Type, IExitableState>()
             {

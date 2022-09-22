@@ -2,7 +2,7 @@
 
 namespace Sources.Architecture.Interfaces
 {
-    public interface IGenerator: IVisualData, IProgressive, IGeneratorProgress, IBuyable
+    public interface IGenerator: IVisualData, IProgressive, IGeneratorProgress, IBuyable, ISaveable
     {
         IResource ProductionResource { get; }
         IReadOnlyReactiveProperty<int> Level { get; }

@@ -29,14 +29,4 @@ namespace Sources.Architecture.Interfaces
         void ChangeAmount(BuyAmount amount);
         string GetCurrentAmount();
     }
-
-    public interface IProgressSaverService : IService
-    {
-        void Save<TData>(TData data) where TData : IVisualData;
-    }
-
-    public interface IProgressLoaderService : IService
-    {
-        IProgressContainer Load<TData>(string name) where TData : IVisualData;
-    }
 }

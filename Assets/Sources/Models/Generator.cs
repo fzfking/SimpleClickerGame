@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Sources.Architecture.Interfaces;
 using Sources.Data;
 using UniRx;
@@ -30,7 +29,8 @@ namespace Sources.Models
         private readonly ReactiveProperty<int> _level;
 
 
-        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0, float progress = 0)
+        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0,
+            float progress = 0)
         {
             ProductionResource = productionResource;
             _level = new ReactiveProperty<int>(level);
@@ -59,6 +59,13 @@ namespace Sources.Models
             _level = new ReactiveProperty<int>(1);
             _progress = new ReactiveProperty<float>(0);
             OnEnd = new ReactiveCommand<double>(Progress.Select(p => p == 0f).AsObservable(), true);
+        }
+
+        public static Generator Load(GeneratorData data, IResource productionResource, IResource costResource)
+        {
+            var level = PlayerPrefs.GetInt($"Generator Level: {data.Name}", data.IsUnlockedByDefault ? 1 : 0);
+            var progress = PlayerPrefs.GetFloat($"Generator progress: {data.Name}", 0f);
+            return new Generator(data, productionResource, costResource, level, progress);
         }
 
         public static Generator CreateMock(IResource resource, double baseCost = 0, double baseProduction = 0,
@@ -102,6 +109,7 @@ namespace Sources.Models
             {
                 amount = MaxLevelCanBuy();
             }
+
             if (CostResource.TrySpend(GetCost(amount)))
             {
                 _level.Value += amount;
@@ -132,6 +140,12 @@ namespace Sources.Models
         private void InvokeEnded()
         {
             OnEnd?.Execute(ProductionValue);
+        }
+
+        public void Save()
+        {
+            PlayerPrefs.SetInt($"Generator Level: {Name}", Level.Value);
+            PlayerPrefs.SetFloat($"Generator progress: {Name}", Progress.Value);
         }
     }
 }

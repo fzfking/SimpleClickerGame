@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Sources.Models
 {
-    public class Manager: IManager, IDeInitiable
+    public class Manager : IManager, IDeInitiable
     {
         public string Name { get; }
         public string Description { get; }
@@ -36,6 +36,12 @@ namespace Sources.Models
             _generator = generator;
         }
 
+        public static Manager Load(ManagerData data, IGenerator generator, IResource costResource)
+        {
+            var isBuyed = bool.Parse(PlayerPrefs.GetString($"Manager: {data.Name}", false.ToString()));
+            return new Manager(generator, costResource, data, isBuyed);
+        }
+
         public static IManager CreateMock(IGenerator generator)
         {
             return new Manager(generator);
@@ -63,6 +69,11 @@ namespace Sources.Models
         public void DeInit()
         {
             _compositeDisposable.Clear();
+        }
+
+        public void Save()
+        {
+            PlayerPrefs.SetString($"Manager: {Name}", IsActive.ToString());
         }
     }
 }

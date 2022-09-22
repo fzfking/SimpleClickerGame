@@ -1,4 +1,5 @@
-﻿using Sources.Architecture.Interfaces;
+﻿using System.Globalization;
+using Sources.Architecture.Interfaces;
 using UniRx;
 using UnityEngine;
 
@@ -18,6 +19,12 @@ namespace Sources.Models
             Description = resourceData.Description;
             Icon = resourceData.Icon;
             _currentValue = new ReactiveProperty<double>(initialValue);
+        }
+
+        public static Resource Load(ResourceData data)
+        {
+            var value = double.Parse(PlayerPrefs.GetString($"Resource: {data.Name}", "0"));
+            return new Resource(value, data);
         }
 
         private Resource(double value = 0)
@@ -44,6 +51,11 @@ namespace Sources.Models
             }
 
             return false;
+        }
+
+        public void Save()
+        {
+            PlayerPrefs.SetString($"Resource: {Name}", CurrentValue.Value.ToString(CultureInfo.InvariantCulture));
         }
     }
 }
