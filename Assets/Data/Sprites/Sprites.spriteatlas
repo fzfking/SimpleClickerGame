@@ -36,19 +36,31 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 9fdc0f82ca470134f84e2d01b88fb013, type: 3}
     - {fileID: 2800000, guid: 3d5bd5ca52e208540abffa66c5f3386d, type: 3}
     - {fileID: 2800000, guid: 26f6d0e08a861f74f91e9b38379619c9, type: 3}
+    - {fileID: 2800000, guid: 6e2da5e6cb8e60a4f85a3b35f8852e8c, type: 3}
+    - {fileID: 2800000, guid: 6a55ee201b4090e40a572fa5ad630e9d, type: 3}
+    - {fileID: 2800000, guid: c5d557da2ad0caa46ba03b3efc7ee066, type: 3}
+    - {fileID: 2800000, guid: 3d0ab504244861247a55ba3a44d51765, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 6a55ee201b4090e40a572fa5ad630e9d, type: 3}
   - {fileID: 21300000, guid: 26f6d0e08a861f74f91e9b38379619c9, type: 3}
   - {fileID: 21300000, guid: 9fdc0f82ca470134f84e2d01b88fb013, type: 3}
+  - {fileID: 21300000, guid: 3d0ab504244861247a55ba3a44d51765, type: 3}
+  - {fileID: 21300000, guid: 6e2da5e6cb8e60a4f85a3b35f8852e8c, type: 3}
   - {fileID: 21300000, guid: 3d5bd5ca52e208540abffa66c5f3386d, type: 3}
+  - {fileID: 21300000, guid: c5d557da2ad0caa46ba03b3efc7ee066, type: 3}
   - {fileID: 21300000, guid: 8acca39ffc2653342a1ff1f202e61298, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Time
   - Purple
   - EmptyPixel
+  - ManagersButton
+  - MoneyProducer
   - Green
+  - GoldProducer
   - Blue
   m_RenderDataMap: {}
   m_Tag: Sprites

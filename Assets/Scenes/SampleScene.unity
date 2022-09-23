@@ -226,7 +226,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -303,11 +303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94be491f1b44460a951ac019f05f5899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProgressBar: {fileID: 0}
-  ResourcesParent: {fileID: 0}
-  ResourcePresenterPrefab: {fileID: -303635857020871975, guid: 5f22baccff7c9d04696779046a1c9c42, type: 3}
-  GeneratorsParent: {fileID: 0}
-  GeneratorPresenterPrefab: {fileID: 4173108263858546103, guid: a87bd9e34f8886944a141376b389dcf5, type: 3}
 --- !u!4 &1078341913
 Transform:
   m_ObjectHideFlags: 0

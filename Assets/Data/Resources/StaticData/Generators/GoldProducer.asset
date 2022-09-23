@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: GoldProducer
   m_EditorClassIdentifier: 
   _name: Gold Producer
-  _description: 
-  _icon: {fileID: 0}
+  _description: Produces gold. Like miner.
+  _icon: {fileID: 21300000, guid: c5d557da2ad0caa46ba03b3efc7ee066, type: 3}
   _productionResource: {fileID: 11400000, guid: 2309be1fd16965c48a1758c38ebf6517, type: 2}
   _costResource: {fileID: 11400000, guid: f88a85f3edf99fd4a96ff0881e90e817, type: 2}
   _baseProduction: 2
   _baseCost: 10
   _baseDelay: 4
+  isUnlockedByDefault: 0

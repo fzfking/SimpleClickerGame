@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Money
   m_EditorClassIdentifier: 
   _name: Money
-  _description: 
+  _description: 'Paper that need to be '
   _icon: {fileID: 21300000, guid: 8acca39ffc2653342a1ff1f202e61298, type: 3}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Time
   m_EditorClassIdentifier: 
   _name: Time
-  _description: 
-  _icon: {fileID: 0}
+  _description: Some ephemeric thing that always passes
+  _icon: {fileID: 21300000, guid: 6a55ee201b4090e40a572fa5ad630e9d, type: 3}
