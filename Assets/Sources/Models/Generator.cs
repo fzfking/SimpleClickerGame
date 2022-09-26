@@ -14,9 +14,7 @@ namespace Sources.Models
         public Sprite Icon { get; }
         public IResource ProductionResource { get; }
         public IResource CostResource { get; }
-
         public IReadOnlyReactiveProperty<int> Level => _level;
-
         public double ProductionValue => _baseProduction * Level.Value;
         public double CostValue => _baseUpgradeCost * (Level.Value + 1);
         public float DelayTime => _baseDelayTime * 1f;
@@ -27,9 +25,8 @@ namespace Sources.Models
         private readonly float _baseDelayTime;
         private readonly ReactiveProperty<float> _progress;
         private readonly ReactiveProperty<int> _level;
-
-
-        public Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0,
+        
+        private Generator(GeneratorData data, IResource productionResource, IResource costResource, int level = 0,
             float progress = 0)
         {
             ProductionResource = productionResource;
@@ -82,11 +79,6 @@ namespace Sources.Models
             }
         }
 
-        private void Produce()
-        {
-            MainThreadDispatcher.StartUpdateMicroCoroutine(WaitForProduce());
-        }
-
         public bool CanUpgrade(int levelValue)
         {
             return (CostResource.CurrentValue.Value - CostValue) >= 0f;
@@ -118,10 +110,21 @@ namespace Sources.Models
 
             return false;
         }
+        
+        public void Save()
+        {
+            PlayerPrefs.SetInt($"Generator Level: {Name}", Level.Value);
+            PlayerPrefs.SetFloat($"Generator progress: {Name}", Progress.Value);
+        }
 
         private int MaxLevelCanBuy()
         {
             return (int)(CostResource.CurrentValue.Value / CostValue);
+        }
+        
+        private void Produce()
+        {
+            MainThreadDispatcher.StartUpdateMicroCoroutine(WaitForProduce());
         }
 
         private IEnumerator WaitForProduce()
@@ -140,12 +143,6 @@ namespace Sources.Models
         private void InvokeEnded()
         {
             OnEnd?.Execute(ProductionValue);
-        }
-
-        public void Save()
-        {
-            PlayerPrefs.SetInt($"Generator Level: {Name}", Level.Value);
-            PlayerPrefs.SetFloat($"Generator progress: {Name}", Progress.Value);
         }
     }
 }

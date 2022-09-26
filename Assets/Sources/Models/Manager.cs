@@ -13,14 +13,13 @@ namespace Sources.Models
         public IGenerator Generator => _generator;
         public bool IsActive => _isActive;
         public double CostValue { get; }
-
         public IResource CostResource { get; }
 
         private bool _isActive;
         private readonly IGenerator _generator;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        public Manager(IGenerator generator, IResource costResource, ManagerData data, bool buyed)
+        private Manager(IGenerator generator, IResource costResource, ManagerData data, bool buyed)
         {
             _generator = generator;
             CostValue = data.Value;
@@ -61,19 +60,19 @@ namespace Sources.Models
             }
         }
 
-        private void GeneratorOnEnded(double value)
+        public void Save()
         {
-            _generator.TryProduce();
+            PlayerPrefs.SetString($"Manager: {Name}", IsActive.ToString());
         }
-
+        
         public void DeInit()
         {
             _compositeDisposable.Clear();
         }
-
-        public void Save()
+        
+        private void GeneratorOnEnded(double value)
         {
-            PlayerPrefs.SetString($"Manager: {Name}", IsActive.ToString());
+            _generator.TryProduce();
         }
     }
 }

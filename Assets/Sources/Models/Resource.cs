@@ -13,23 +13,23 @@ namespace Sources.Models
         private readonly ReactiveProperty<double> _currentValue;
         public IReadOnlyReactiveProperty<double> CurrentValue => _currentValue;
 
-        public Resource(double initialValue, ResourceData resourceData)
+        private Resource(double initialValue, ResourceData resourceData)
         {
             Name = resourceData.Name;
             Description = resourceData.Description;
             Icon = resourceData.Icon;
             _currentValue = new ReactiveProperty<double>(initialValue);
         }
+        
+        private Resource(double value = 0)
+        {
+            _currentValue = new ReactiveProperty<double>(value);
+        }
 
         public static Resource Load(ResourceData data)
         {
             var value = double.Parse(PlayerPrefs.GetString($"Resource: {data.Name}", "0"));
             return new Resource(value, data);
-        }
-
-        private Resource(double value = 0)
-        {
-            _currentValue = new ReactiveProperty<double>(value);
         }
 
         public static Resource CreateMock(double initialValue)
