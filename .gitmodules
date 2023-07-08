@@ -1,0 +1,3 @@
+[submodule "Assets/Internal/FZFUI"]
+	path = Assets/Internal/FZFUI
+	url = https://github.com/fzf-studios/UI.git
