@@ -1,0 +1,1 @@
+[{"Id":0,"NameKey":"gold-dig","DescriptionKey":"gold-dig-desc","IconKey":"gold-dig-icon","ImageKey":"gold-dig-image","BaseProduction":1.0,"LevelMultiplier":{"0":1.0,"5":4.0,"10":2.0,"20":6.0},"ProductionTimeByLevel":{"0":3.0,"10":2.0,"20":1.0,"30":0.2},"ProducedResourceId":0,"Price":{"0":3.0}}]

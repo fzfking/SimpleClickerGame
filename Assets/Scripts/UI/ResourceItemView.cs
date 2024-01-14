@@ -1,4 +1,4 @@
-using FZFUI.UI.Autogen;
+using FZFUI.Autogen;
 
 namespace UI
 {
@@ -6,8 +6,7 @@ namespace UI
     {
     
     }
-    public partial class ResourceItemView: BaseAutogen, IResourceItemView
+    public partial class ResourceItemView: BasePresenter, IResourceItemView
     {
-
     }
 }

@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "b870d64b5704a764fd03aaccb11f2dbe652b1756"
     },
+    "com.cysharp.memorypack": {
+      "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "286a8caeacca6c0414b944a5ed01647a10435ec5"
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
@@ -216,6 +223,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.recorder": {
       "version": "4.0.0",
       "depth": 0,
@@ -272,6 +286,13 @@
       "source": "git",
       "dependencies": {},
       "hash": "d2b10980e380e1c9afef61dee63ca2b45b5eccf9"
+    },
+    "com.yasirkula.ingamedebugconsole": {
+      "version": "https://github.com/yasirkula/UnityIngameDebugConsole.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "afe348bd6997af9dd78ab628f8bf5868bc7563ab"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
